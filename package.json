@@ -1,0 +1,30 @@
+{
+  "name": "felog-b.e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.ts",
+  "scripts": {
+    "compile": "tsc && node ./build/src/app.js",
+    "start": "nodemon -e ts --exec \"npm run compile\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Felog-Emotion-Diary/felog-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Felog-Emotion-Diary/felog-backend/issues"
+  },
+  "homepage": "https://github.com/Felog-Emotion-Diary/felog-backend#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.24",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
