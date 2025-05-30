@@ -9,6 +9,10 @@
 ## API 문서
 - 작성 예정
 ## 사용법
+## .env 설정
+DATABASE_URL="postgresql://사용자이름:비밀번호@주소:포트/db이름"
+
+
 ### 서버 실행
 ``` bash
 npm start
