@@ -2,11 +2,13 @@
   "name": "felog-b.e",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.ts",
+  "main": "src/server.ts",
   "scripts": {
-    "compile": "tsc && node ./build/src/app.js",
+    "compile": "tsc && node ./build/src/server.js",
     "build": "tsc",
     "start": "nodemon -e ts --exec \"npm run compile\"",
+    "dev": "nodemon src/server.ts",
+
     "prisma": "prisma",
     "migrate": "prisma migrate dev",
     "studio": "prisma studio"

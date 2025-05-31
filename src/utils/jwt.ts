@@ -13,7 +13,7 @@ export const signToken = (payload: object): string => {
     return jwt.sign(payload, JWT_SECRET, options);
 };
 
-function validateExpiresIn(value: string | undefined){
+function validateExpiresIn(value: string | undefined): StringValue{
 
     const defaultValue = '1h'
     const stringValueRegex: RegExp = /^(\d+)(years?|yrs?|yr|y|weeks?|w|days?|d|hours?|hrs?|hr|h|minutes?|mins?|min|m|seconds?|secs?|sec|s|milliseconds?|millis?|ms)$/i;
