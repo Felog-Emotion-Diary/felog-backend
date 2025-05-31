@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Felog-Emotion-Diary/felog-backend#readme",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.2",
     "@types/node": "^22.15.24",
     "nodemon": "^3.1.10",
@@ -30,6 +31,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
+    "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "prisma": "^6.8.2"
