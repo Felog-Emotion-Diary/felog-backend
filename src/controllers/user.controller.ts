@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { UserService } from '../services/user.service';
+import { sendResetEmail } from '../utils/sendEmail';
 
 const userService = new UserService();
 
@@ -20,6 +21,38 @@ export class UserController {
             return res.status(409).json({ message: error.message });
         }
         return res.status(500).json({ message: error.message || '회원가입 실패' });
+    }
+  }
+
+   // 이메일로 링크 전송
+  async requestPasswordReset(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+      const token = await userService.requestPasswordReset(email);
+
+      const link = `http://localhost:3000/reset/${token}`;
+      await sendResetEmail(email, link);
+
+      return res.json({ message: '비밀번호 재설정 링크가 이메일로 전송되었습니다.' });
+    } catch (error: any) {
+      return res.status(400).json({ message: error.message });
+    }
+  }
+
+  // 토큰 기반 비밀번호 변경
+  async resetPassword(req: Request, res: Response) {
+    try {
+      const { token } = req.params;
+      const { newPassword } = req.body;
+
+      const result = await userService.resetPassword(token, newPassword);
+      if (!result.success) {
+        return res.status(result.status ?? 400).json({ message: result.message });
+      }
+
+      return res.json({ message: '비밀번호가 성공적으로 변경되었습니다.' });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
     }
   }
 }
