@@ -8,6 +8,10 @@ router.post('/register', async (req: Request, res: Response) => {
   await userController.register(req, res);
 });
 
+router.post('/register', async (req: Request, res: Response) => {
+  await userController.login(req, res);
+});
+
 router.post('/reset', async (req: Request, res: Response) => {
   await userController.requestPasswordReset(req, res);
 });

@@ -1,4 +1,4 @@
-import { hashPassword } from '../utils/bcrypt';
+import { hashPassword, verifyPassword } from '../utils/bcrypt';
 import { signToken } from '../utils/jwt'
 import { UserRepository } from '../repositories/user.repository';
 import { User } from '@prisma/client';
@@ -7,6 +7,11 @@ interface RegisterInput {
   email: string;
   password: string;
   nickname: string;
+}
+
+interface LoginInput {
+  email: string;
+  password: string;
 }
 
 export class UserService {
@@ -24,6 +29,22 @@ export class UserService {
 
     return {user, token}
   }
+
+  async loginUser(input: LoginInput): Promise<{ user: User; token: string }> {
+    const {email, password} = input
+
+    const existingEmail = await this.userRepository.findByEmail(email)
+    if (!existingEmail) throw new Error('이메일 또는 비밀번호가 잘못되었습니다.')
+    const user = existingEmail
+
+    const verify = await verifyPassword(password, existingEmail.password);
+    
+    if (!verify) throw new Error('이메일 또는 비밀번호가 잘못되었습니다.')
+    const token = signToken({userId: user.id})
+
+    return {user, token}
+  }
+
   // 이메일 입력 후 토큰 생성
   async requestPasswordReset(email: string): Promise<string> {
     const user = await this.userRepository.findByEmail(email);
