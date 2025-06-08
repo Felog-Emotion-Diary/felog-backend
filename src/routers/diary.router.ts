@@ -3,10 +3,9 @@ import * as DiaryController from '../controllers/diary.controller';
 
 const router = Router();
 
-router.post('/', DiaryController.createDiary);
+router.put('/write', DiaryController.writeDiary);
 router.get('/', DiaryController.getAllDiaries);
-router.get('/:id', DiaryController.getDiaryById);
-router.patch('/:id', DiaryController.updateDiary);
-router.delete('/:id', DiaryController.deleteDiary);
+router.get('/:date', DiaryController.getDiaryByDate);
+router.delete('/delete', DiaryController.deleteDiaryByDate);
 
 export default router;

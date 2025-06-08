@@ -4,19 +4,47 @@ export const createDiary = async (data: any) => {
   return await prisma.diary.create({ data });
 };
 
-export const findAllDiaries = async () => {
+export const findByDateRange = async (email: string, startDate: string, endDate: string) => {
   return await prisma.diary.findMany({
-    orderBy: { createdAt: 'desc' },
-    include: { emotion: true },
+    where: {
+      email: email,
+      date: {
+        gte: startDate,
+        lte: endDate,
+      },
+    },
+    select: {
+      date: true,
+      title: true,
+      img: true,
+      emotion: {
+        select: {
+          emotion: true
+        }
+      }
+    },
+    orderBy: {
+      date: 'asc'
+    }
   });
 };
 
-export const findDiaryById = async (id: number) => {
-  return await prisma.diary.findUnique({
-    where: { id },
-    include: { emotion: true },
+export const findByDate = async (email: string, date: string) => {
+  return await prisma.diary.findFirst({
+    where: {
+      email,
+      date
+    },
+    include: {
+      emotion: {
+        select: {
+          emotion: true
+        }
+      }
+    }
   });
 };
+
 
 export const updateDiary = async (id: number, data: any) => {
   return await prisma.diary.update({
