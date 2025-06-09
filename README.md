@@ -26,3 +26,6 @@ npm start
 ### Server
 - Express.js + Typescript 기반 서버
 - Nodemon: 개발 중 자동 서버 재시작
+
+### DB
+- PostgreSQL + Prisma
