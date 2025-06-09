@@ -79,9 +79,9 @@ export class UserController {
 
   async getUserInfo(req: Request, res: Response) {
     try {
-      
-      const id = ''
-      const result = await userService.getUserInfo(id);
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: '인증 실패' });
+      const result = await userService.getUserInfo(userId);
       if (!result.success) {
         return res.status(result.status ?? 400).json({ message: result.message });
       }
