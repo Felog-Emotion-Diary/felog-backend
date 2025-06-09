@@ -28,7 +28,7 @@ export class UserController {
   }
     async login(req: Request, res: Response) {
     try {
-        const { email, password} = req.body;
+        const { email, password } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ message: '모든 필드를 입력해주세요.' });

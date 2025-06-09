@@ -9,8 +9,9 @@ export class StatisticsController {
   async longestDiary(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
-      const { email } = req.body;
-      const longTxt = await statisticsService.getLongestDiary(email as string, startDate as string, endDate as string);
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: '인증 실패' });
+      const longTxt = await statisticsService.getLongestDiary(userId as string, startDate as string, endDate as string);
       return res.status(200).json({ longTxt });
     } catch (error: any) {
       return res.status(500).json({ message: error.message || '가장 긴 일기 조회 실패' });
@@ -21,8 +22,9 @@ export class StatisticsController {
   async emotionRatio(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
-      const { email } = req.body;
-      const data = await statisticsService.getEmotionRatio(email as string, startDate as string, endDate as string);
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: '인증 실패' });
+      const data = await statisticsService.getEmotionRatio(userId as string, startDate as string, endDate as string);
       return res.status(200).json(data);
     } catch (error: any) {
       return res.status(500).json({ message: error.message || '감정 비율 조회 실패' });
@@ -33,8 +35,9 @@ export class StatisticsController {
   async diaryCounts(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
-      const { email } = req.body;
-      const counts = await statisticsService.getDiaryCounts(email as string, startDate as string, endDate as string);
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: '인증 실패' });
+      const counts = await statisticsService.getDiaryCounts(userId as string, startDate as string, endDate as string);
       return res.status(200).json(counts);
     } catch (error: any) {
       return res.status(500).json({ message: error.message || '일기 수 통계 조회 실패' });
@@ -45,8 +48,9 @@ export class StatisticsController {
   async emotionPerWeek(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
-      const { email } = req.body;
-      const data = await statisticsService.getEmotionPerWeek(email as string, startDate as string, endDate as string);
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: '인증 실패' });
+      const data = await statisticsService.getEmotionPerWeek(userId as string, startDate as string, endDate as string);
       return res.status(200).json(data);
     } catch (error: any) {
       return res.status(500).json({ message: error.message || '요일별 감정 조회 실패' });
@@ -57,8 +61,9 @@ export class StatisticsController {
   async diaryCountPerWeek(req: Request, res: Response) {
     try {
       const { startDate, endDate } = req.query;
-      const { email } = req.body;
-      const data = await statisticsService.getDiaryCountPerWeek(email as string, startDate as string, endDate as string);
+      const userId = req.user?.userId;
+      if (!userId) return res.status(401).json({ message: '인증 실패' });
+      const data = await statisticsService.getDiaryCountPerWeek(userId as string, startDate as string, endDate as string);
       return res.status(200).json(data);
     } catch (error: any) {
       return res.status(500).json({ message: error.message || '요일별 일기 수 조회 실패' });

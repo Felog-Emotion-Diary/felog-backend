@@ -1,8 +1,10 @@
 import express, { Request, Response, Router } from 'express';
 import { StatisticsController } from '../controllers/statistics.controller';
+import { authMiddleware } from '../middlewares/middleware.auth';
 
 const router = Router();
 const statistisController = new StatisticsController();
+router.use(authMiddleware);
 
 router.get('/longTxt', async (req: Request, res: Response) => {
   await statistisController.longestDiary(req, res);
