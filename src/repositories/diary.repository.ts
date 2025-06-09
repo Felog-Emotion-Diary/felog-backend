@@ -1,13 +1,33 @@
 import prisma from '../lib/prisma';
 
 export const createDiary = async (data: any) => {
-  return await prisma.diary.create({ data });
+  const { userId, ...rest } = data;
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  });
+  if (!user) throw new Error('사용자를 찾을 수 없습니다.');
+
+  return await prisma.diary.create({
+    data: {
+      ...rest,
+      email: user.email,
+    },
+  });
 };
 
-export const findByDateRange = async (email: string, startDate: string, endDate: string) => {
+
+export const findByDateRange = async (userId: string, startDate: string, endDate: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  });
+  if (!user) throw new Error('사용자를 찾을 수 없습니다.');
+
   return await prisma.diary.findMany({
     where: {
-      email: email,
+      email: user.email,
       date: {
         gte: startDate,
         lte: endDate,
@@ -19,32 +39,33 @@ export const findByDateRange = async (email: string, startDate: string, endDate:
       img: true,
       emotion: {
         select: {
-          emotion: true
-        }
-      }
+          emotion: true,
+        },
+      },
     },
-    orderBy: {
-      date: 'asc'
-    }
+    orderBy: { date: 'asc' },
   });
 };
 
-export const findByDate = async (email: string, date: string) => {
+export const findByDate = async (userId: string, date: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  });
+  if (!user) throw new Error('사용자를 찾을 수 없습니다.');
+
   return await prisma.diary.findFirst({
     where: {
-      email,
-      date
+      email: user.email,
+      date,
     },
     include: {
       emotion: {
-        select: {
-          emotion: true
-        }
-      }
-    }
+        select: { emotion: true },
+      },
+    },
   });
 };
-
 
 export const updateDiary = async (id: number, data: any) => {
   return await prisma.diary.update({
