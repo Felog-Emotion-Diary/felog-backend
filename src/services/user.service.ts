@@ -70,4 +70,13 @@ export class UserService {
 
     return { success: true };
   }
+
+  async getUserInfo(id: string) {
+    const UserInfo = await this.userRepository.findById(id);
+    if (!UserInfo) {
+      return { success: false, message: '존재하지 않는 유저입니다.', status: 400 };
+    }
+
+    return { success: true, nickname: UserInfo.nickname };
+  }
 }

@@ -76,4 +76,19 @@ export class UserController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  async getUserInfo(req: Request, res: Response) {
+    try {
+      
+      const id = ''
+      const result = await userService.getUserInfo(id);
+      if (!result.success) {
+        return res.status(result.status ?? 400).json({ message: result.message });
+      }
+
+      return res.json({ nickname: result.nickname });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
