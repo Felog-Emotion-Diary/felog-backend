@@ -26,6 +26,16 @@ function validateExpiresIn(value: string | undefined): StringValue{
 }
 
 
-export const verifyToken = (token: string): string | JwtPayload => {
-    return jwt.verify(token, JWT_SECRET);
+export const verifyToken = (token: string): { userId: string } => {
+  const decoded = jwt.verify(token, JWT_SECRET);
+  
+  if (typeof decoded === 'string') {
+    throw new Error('잘못된 토큰 형식입니다.');
+  }
+
+  if (!decoded.userId || typeof decoded.userId !== 'string') {
+    throw new Error('userId가 토큰에 없습니다.');
+  }
+
+  return { userId: decoded.userId };
 };
