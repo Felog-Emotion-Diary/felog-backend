@@ -5,14 +5,14 @@ export class StatisticsService {
 
   // 1. 가장 긴 일기 조회
   async getLongestDiary(email:string, startDate: string, endDate: string): Promise<{ longText: number }> {
-    const diaries = await this.diaryRepository.getDiariesBetween(email, startDate, endDate);
+    const diaries = await this.diaryRepository.findByDateRange(email, startDate, endDate);
     if (diaries.length === 0) return { longText: 0 };
 
     const longest = diaries.reduce((prev, curr) =>
       curr.content.length > prev.content.length ? curr : prev
     );
 
-    return { longText: longest.content };
+    return { longText: longest.content.length };
   }
 
   // 2. 감정 비율 조회
@@ -20,11 +20,11 @@ export class StatisticsService {
     mostIdx: number;
     emotionCounts: { emotion: string; count: number }[];
   }> {
-    const diaries = await this.diaryRepository.getDiariesBetween(email,startDate, endDate);
+    const diaries = await this.diaryRepository.findByDateRange(email,startDate, endDate);
 
     const emotionCounts: Record<string, number> = {};
     for (const diary of diaries) {
-      const emotion = diary.emotion;
+      const emotion = diary.emotion.emotion;
       emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
     }
 
@@ -42,7 +42,7 @@ export class StatisticsService {
     totalCount: number;
     streakCount: number;
   }> {
-    const diaries = await this.diaryRepository.getDiariesBetween(email,startDate, endDate);
+    const diaries = await this.diaryRepository.findByDateRange(email,startDate, endDate);
     const totalCount = diaries.length;
 
     const dates = diaries.map(d => new Date(d.date)).sort((a, b) => a.getTime() - b.getTime());
@@ -72,7 +72,7 @@ export class StatisticsService {
   async getEmotionPerWeek(email:string, startDate: string, endDate: string): Promise<{
     [day: string]: { emotion: string; count: number };
   }> {
-    const diaries = await this.diaryRepository.getDiariesBetween(email,startDate, endDate);
+    const diaries = await this.diaryRepository.findByDateRange(email,startDate, endDate);
     const dayMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
     const weekData: Record<string, Record<string, number>> = {
@@ -81,7 +81,7 @@ export class StatisticsService {
 
     for (const diary of diaries) {
       const day = dayMap[new Date(diary.date).getDay()];
-      const emotion = diary.emotion;
+      const emotion = diary.emotion.emotion;
       weekData[day][emotion] = (weekData[day][emotion] || 0) + 1;
     }
 
@@ -103,7 +103,7 @@ export class StatisticsService {
   async getDiaryCountPerWeek(email:string, startDate: string, endDate: string): Promise<
     { day: string; count: number }[]
   > {
-    const diaries = await this.diaryRepository.getDiariesBetween(email, startDate, endDate);
+    const diaries = await this.diaryRepository.findByDateRange(email, startDate, endDate);
     const dayMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     const counts: Record<string, number> = {
       sun: 0, mon: 0, tue: 0, wed: 0, thu: 0, fri: 0, sat: 0
