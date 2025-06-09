@@ -8,7 +8,7 @@ router.post('/register', async (req: Request, res: Response) => {
   await userController.register(req, res);
 });
 
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response) => {
   await userController.login(req, res);
 });
 
