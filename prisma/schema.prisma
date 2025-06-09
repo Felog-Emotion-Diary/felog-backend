@@ -26,3 +26,31 @@ model PasswordResetToken {
 
   user       User     @relation(fields: [userId], references: [id])
 }
+
+model Emotion {
+  id         Int     @id
+  emotion    String
+  colorCode  String  @map("color_code")
+
+  diaries    Diary[] 
+}
+
+model Diary {
+  id         Int      @id @default(autoincrement())
+  title      String
+  content    String
+  date       String
+  createdAt  DateTime @default(now())
+  img        String?
+  email      String
+  emotionId  Int
+  status     DiaryStatus
+
+  emotion    Emotion  @relation(fields: [emotionId], references: [id])
+}
+
+enum DiaryStatus {
+  TEMP
+  PUBLISHED
+}
+
