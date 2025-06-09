@@ -11,10 +11,16 @@
 ## 사용법
 ### .env 설정
 DATABASE_URL="postgresql://사용자이름:비밀번호@주소:포트/db이름"
-### DB 마이그레이션
+### prisma
+#### DB 마이그레이션
 ``` bash
 npm run migrate
 ```
+#### Prisma Client
+```bash
+npm run generate
+```
+
 ### 서버 실행
 ``` bash
 npm start
