@@ -4,8 +4,11 @@ import { sendResetEmail } from '../utils/sendEmail';
 
 const userService = new UserService();
 
+
 export class UserController {
-  async register(req: Request, res: Response) {
+    private userService = new UserService();
+
+    async register(req: Request, res: Response) {
     try {
         const { email, password, nickname } = req.body;
 
@@ -13,7 +16,7 @@ export class UserController {
             return res.status(400).json({ message: '모든 필드를 입력해주세요.' });
         }
 
-        const user = await userService.registerUser({ email, password, nickname });
+            const user = await userService.registerUser({ email, password, nickname });
 
         return res.status(201).json({ message: '회원가입 성공', user });
     } catch (error: any) {
@@ -21,6 +24,24 @@ export class UserController {
             return res.status(409).json({ message: error.message });
         }
         return res.status(500).json({ message: error.message || '회원가입 실패' });
+    }
+  }
+    async login(req: Request, res: Response) {
+    try {
+        const { email, password} = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: '모든 필드를 입력해주세요.' });
+        }
+
+        const user = await this.userService.loginUser({ email, password});
+
+        return res.status(200).json({ message: '로그인 성공', user });
+    } catch (error: any) {
+        if (error.message === '이메일 또는 비밀번호가 잘못되었습니다.') {
+            return res.status(409).json({ message: error.message });
+        }
+        return res.status(500).json({ message: error.message || '로그인 실패' });
     }
   }
 
