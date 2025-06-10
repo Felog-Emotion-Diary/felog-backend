@@ -22,9 +22,9 @@ export class StatisticsService {
   }> {
     const diaries = await this.diaryRepository.findByDateRange(email,startDate, endDate);
 
-    const emotionCounts: Record<string, number> = {};
+    const emotionCounts: Record<number, number> = {};
     for (const diary of diaries) {
-      const emotion = diary.emotion.emotion;
+      const emotion = diary.emotionId;
       emotionCounts[emotion] = (emotionCounts[emotion] || 0) + 1;
     }
 
@@ -70,29 +70,29 @@ export class StatisticsService {
 
   // 4. 요일별 주요 감정
   async getEmotionPerWeek(email:string, startDate: string, endDate: string): Promise<{
-    [day: string]: { emotion: string; count: number };
+    [day: string]: { emotion: number; count: number };
   }> {
     const diaries = await this.diaryRepository.findByDateRange(email,startDate, endDate);
     const dayMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
-    const weekData: Record<string, Record<string, number>> = {
+    const weekData: Record<string, Record<number, number>> = {
       sun: {}, mon: {}, tue: {}, wed: {}, thu: {}, fri: {}, sat: {}
     };
 
     for (const diary of diaries) {
       const day = dayMap[new Date(diary.date).getDay()];
-      const emotion = diary.emotion.emotion;
+      const emotion = diary.emotionId
       weekData[day][emotion] = (weekData[day][emotion] || 0) + 1;
     }
 
-    const result: Record<string, { emotion: string; count: number }> = {};
+    const result: Record<string, { emotion: number; count: number }> = {};
     for (const day of dayMap) {
       const emotionEntries = Object.entries(weekData[day]);
       if (emotionEntries.length === 0) {
-        result[day] = { emotion: '', count: 0 };
+        result[day] = { emotion: 0, count: 0 };
       } else {
         const [emotion, count] = emotionEntries.sort((a, b) => b[1] - a[1])[0];
-        result[day] = { emotion, count };
+        result[day] = { emotion: parseInt(emotion), count };
       }
     }
 
