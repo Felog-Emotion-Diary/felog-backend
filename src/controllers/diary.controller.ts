@@ -143,3 +143,27 @@ export const getRandomDiaryDate = async (req: AuthenticatedRequest, res: Respons
     res.status(404).json({ message: err.message });
   }
 };
+
+export const getDiaryImageController = async (req: AuthenticatedRequest,res: Response): Promise<void> => {
+  try {
+    const userId = req.user?.userId;
+    const { date } = req.params;
+
+    if (!userId || !date) {
+      res.status(400).json({ message: 'userId 또는 date가 없습니다.' });
+      return;
+    }
+
+    const diary = await DiaryService.getByDate(userId, date);
+
+    if (!diary) {
+      res.status(404).json({ message: '일기를 찾을 수 없습니다.' });
+      return;
+    }
+
+    res.json({ img: diary.img ?? null });
+  } catch (err) {
+    console.error('❌ [getDiaryImageController] Error:', err);
+    res.status(500).json({ message: '이미지 조회 실패' });
+  }
+};

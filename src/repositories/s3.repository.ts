@@ -1,6 +1,6 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import dotenv from 'dotenv';
 import { v4 as uuid } from 'uuid';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -12,19 +12,19 @@ const s3 = new S3Client({
   },
 });
 
-export const uploadToS3 = async (file: Express.Multer.File): Promise<string> => {
+export const uploadFileToS3 = async (
+  file: Express.Multer.File
+): Promise<string> => {
   const key = `images/${Date.now()}_${uuid()}_${file.originalname}`;
 
   const command = new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET!,
     Key: key,
     Body: file.buffer,
-    ContentType: file.mimetype,
-    ACL: 'public-read',
+    ContentType: file.mimetype
   });
 
   await s3.send(command);
 
-  const fileUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
-  return fileUrl;
+  return `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 };
