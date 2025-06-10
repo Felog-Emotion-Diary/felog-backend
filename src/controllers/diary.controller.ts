@@ -54,7 +54,7 @@ export const getAllDiaries = async (req: AuthenticatedRequest, res: Response): P
       date: diary.date,
       title: diary.title,
       img: diary.img,
-      emotion: diary.emotion.emotion
+      emotion: diary.emotion.id
     }));
 
     console.log('✅ [getAllDiaries] Found diaries:', result.length);

@@ -14,7 +14,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/users', userRouter);
-app.use('/api/diaries', diaryRouter);
+app.use('/api/diaries', diaryRouter); 
 app.use('/api/statistics', statisticsRouter); 
 
 app.set("port", process.env.PORT || 3000);

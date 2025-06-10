@@ -39,6 +39,7 @@ export const findByDateRange = async (userId: string, startDate: string, endDate
       img: true,
       emotion: {
         select: {
+          id: true,
           emotion: true,
         },
       },
@@ -61,7 +62,9 @@ export const findByDate = async (userId: string, date: string) => {
     },
     include: {
       emotion: {
-        select: { emotion: true },
+        select: { 
+          id: true,
+          emotion: true },
       },
     },
   });
