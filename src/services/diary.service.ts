@@ -41,3 +41,13 @@ export const deleteByDate = async (userId: string, date: string) => {
   await DiaryRepository.deleteDiary(diary.id);
   return true;
 };
+
+export const getRandomDiaryDate = async (userId: string) => {
+  const dates = await DiaryRepository.getAllDiaryDates(userId);
+
+  if (!dates.length) throw new Error('작성된 일기가 없습니다.');
+
+  const randomDate = dates[Math.floor(Math.random() * dates.length)].date;
+
+  return randomDate;
+};

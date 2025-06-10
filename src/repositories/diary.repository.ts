@@ -82,3 +82,21 @@ export const deleteDiary = async (id: number) => {
     where: { id },
   });
 };
+
+export const getAllDiaryDates = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  });
+
+  if (!user) throw new Error('사용자를 찾을 수 없습니다.');
+
+  return await prisma.diary.findMany({
+    where: {
+      email: user.email,
+      status: 'PUBLISHED',
+    },
+    select: { date: true },
+  });
+};
+

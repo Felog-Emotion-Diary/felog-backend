@@ -51,7 +51,7 @@ export class UserController {
       const { email } = req.body;
       const token = await userService.requestPasswordReset(email);
 
-      const link = `http://localhost:3000/reset/${token}`;
+      const link = `http://localhost:5173/reset/${token}`;
       await sendResetEmail(email, link);
 
       return res.json({ message: '비밀번호 재설정 링크가 이메일로 전송되었습니다.' });

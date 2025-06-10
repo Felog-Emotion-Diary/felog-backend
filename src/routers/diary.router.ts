@@ -6,7 +6,8 @@ const router = Router();
 
 router.put('/write', authMiddleware, DiaryController.writeDiary);
 router.get('/', authMiddleware,DiaryController.getAllDiaries);
-router.get('/', authMiddleware, DiaryController.getDiaryByDate);
+router.get('/read', authMiddleware, DiaryController.getDiaryByDate);
 router.delete('/delete', authMiddleware, DiaryController.deleteDiaryByDate);
+router.get('/random', authMiddleware, DiaryController.getRandomDiaryDate);
 
 export default router;

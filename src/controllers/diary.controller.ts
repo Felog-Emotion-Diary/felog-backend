@@ -91,7 +91,7 @@ export const getDiaryByDate = async (req: AuthenticatedRequest, res: Response): 
       title: diary.title,
       content: diary.content,
       img: diary.img,
-      emotion: diary.emotion.emotion
+      emotion: diary.emotion.id
     });
   } catch (err) {
     console.error('❌ [getDiaryByDate] Error:', err);
@@ -124,5 +124,22 @@ export const deleteDiaryByDate = async (req: AuthenticatedRequest, res: Response
   } catch (err) {
     console.error('❌ [deleteDiaryByDate] Error:', err);
     res.status(500).json({ message: '삭제 실패', error: err });
+  }
+};
+
+export const getRandomDiaryDate = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      res.status(400).json({ message: 'userId가 필요합니다.' });
+      return;
+    }
+
+    const randomDate = await DiaryService.getRandomDiaryDate(userId);
+
+    res.status(200).json({ randomDate });
+  } catch (err: any) {
+    res.status(404).json({ message: err.message });
   }
 };
