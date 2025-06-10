@@ -1,14 +1,10 @@
-// import express from 'express';
-// import { upload } from '../utils/s3';
-// import { authMiddleware } from '../middlewares/middleware.auth';
+import express from 'express';
+import { upload } from '../utils/multer';
+import { authMiddleware } from '../middlewares/middleware.auth';
+import { uploadImageController } from '../controllers/upload.controller';
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
-//   if (!req.file) return res.status(400).json({ message: '파일이 없습니다.' });
+router.post('/', authMiddleware, upload.single('image'), uploadImageController);
 
-//   const fileUrl = (req.file as any).location;
-//   res.json({ url: fileUrl });
-// });
-
-// export default router;
+export default router;
