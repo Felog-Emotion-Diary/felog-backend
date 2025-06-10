@@ -22,11 +22,7 @@ export class StatisticsRepository {
       select: {
         date: true,
         content: true,
-        emotion: {
-          select: {
-            emotion: true
-          }
-        }
+        emotionId: true
       },
       orderBy: {
         date: 'asc'
